@@ -2,6 +2,8 @@
 
 `src` files from [woltapp/blurhash](https://github.com/woltapp/blurhash)
 
+[Algorithm description](https://github.com/woltapp/blurhash/blob/master/Algorithm.md)
+
 ### Install
 
 ```
