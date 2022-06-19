@@ -30,7 +30,7 @@ const hashGen = async (filename: string) => {
   ctx.drawImage(image, 0, 0, scaledWidth, scaledHeight);
   const imageData = ctx?.getImageData(0, 0, scaledWidth, scaledHeight);
   const hash = encode(imageData.data, scaledWidth, scaledHeight, 4, 4);
-  return { hash, width: scaledWidth, height: scaledHeight, filename };
+  return { hash, width, height, filename };
 };
 
 interface Options {
@@ -41,9 +41,14 @@ interface Options {
 }
 
 const imageGen = async ({ hash, width, height, filename }: Options) => {
-  const decoded = decode(hash, width, height);
-  const newImage = createImageData(decoded, width, height);
-  const newCanvas = createCanvas(width, height);
+  const { width: scaledWidth, height: scaledHeight } = resize({
+    width,
+    height,
+  });
+
+  const decoded = decode(hash, scaledWidth, scaledHeight);
+  const newImage = createImageData(decoded, scaledWidth, scaledHeight);
+  const newCanvas = createCanvas(scaledWidth, scaledHeight);
   const newCtx = newCanvas.getContext("2d");
   newCtx.putImageData(newImage, 0, 0);
   const newFilename = filename.split(".").slice(0, -1).join(".") + "-blur.jpg";
